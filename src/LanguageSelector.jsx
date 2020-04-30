@@ -1,6 +1,6 @@
 import React, { useMemo, useContext, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { Dropdown } from '@kogaio'
+import { Dropdown } from '@ivoryio/kogaio'
 import { useField } from 'formik'
 import { I18nContext } from './I18nProvider'
 

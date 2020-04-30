@@ -4,7 +4,12 @@
   "description": "Etvas i18n components",
   "main": "lib/index.js",
   "module": "es/index.js",
-  "files": ["css", "es", "lib", "umd"],
+  "files": [
+    "css",
+    "es",
+    "lib",
+    "umd"
+  ],
   "scripts": {
     "build": "nwb build-react-component",
     "clean": "nwb clean-module && nwb clean-demo",
@@ -15,7 +20,11 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
-    "debug": "^4.1.1"
+    "@ivoryio/kogaio": "^0.7.92",
+    "debug": "^4.1.1",
+    "formik": "^2.1.4",
+    "prop-types": "^15.7.2",
+    "styled-components": "^5.1.0"
   },
   "peerDependencies": {
     "react": "16.x"
@@ -27,7 +36,9 @@
   },
   "author": "Etvas Team",
   "homepage": "",
-  "license": "",
+  "license": "MIT",
   "repository": "",
-  "keywords": ["react-component"]
+  "keywords": [
+    "react-component"
+  ]
 }

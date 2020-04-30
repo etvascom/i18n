@@ -12,7 +12,9 @@ const makeCtx = i18nService => ({
 })
 
 export const I18nProvider = ({ children, i18nService, authContext }) => {
-  const { currentUser } = useContext(authContext)
+  const { currentUser } = authContext
+    ? useContext(authContext)
+    : { currentUser: undefined }
   const [ctx, setCtx] = useState(makeCtx(i18nService))
 
   useEffect(() => i18nService.autodetectLanguage(currentUser?.locale), [
