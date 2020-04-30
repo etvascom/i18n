@@ -104,7 +104,7 @@ export class I18nService extends EventEmitter {
   }
 
   supportsLanguage(language) {
-    return true
+    return this.languages.some(({ id }) => id === language)
   }
 
   ensureSupportedLanguage(language) {

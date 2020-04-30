@@ -1,10 +1,12 @@
-export const languages = {
-  de: {
+export const languages = [
+  {
+    id: 'de',
     name: 'Deutsch',
     englishName: 'German'
   },
-  en: {
-    name: 'Enghlish',
+  {
+    id: 'en',
+    name: 'English',
     englishName: 'English'
   }
-}
+]

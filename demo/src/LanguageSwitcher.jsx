@@ -4,9 +4,9 @@ import { withLanguages, withLanguageSwitcher } from '../../src'
 
 export const LanguageSelector = withLanguages(({ languages, ...props }) => (
   <Dropdown
-    options={Object.keys(languages).map(id => ({
+    options={languages.map(({ id, name }) => ({
       id,
-      label: languages[id].name
+      label: name
     }))}
     {...props}
   />
