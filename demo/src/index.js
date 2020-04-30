@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 
-import { I18nProvider, T, I18nService, LanguageSwitcher } from '../../src'
+import { I18nProvider, T, I18nService } from '../../src'
+import { LanguageSwitcher, LanguageSelector } from './LanguageSwitcher'
 import { languages } from './languages'
 import en from './dictionaries/en'
 
