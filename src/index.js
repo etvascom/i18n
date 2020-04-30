@@ -1,9 +1,5 @@
-import React, {Component} from 'react'
-
-export default class extends Component {
-  render() {
-    return <div>
-      <h2>Welcome to React components</h2>
-    </div>
-  }
-}
+export * from './LanguageSelector'
+export * from './languages'
+export * from './I18nProvider'
+export * from './I18nService'
+export * from './T'
