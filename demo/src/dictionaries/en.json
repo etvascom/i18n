@@ -1,5 +1,7 @@
 {
   "save": "Save",
   "hello": "Hello",
-  "hello-world": "Hello World"
+  "hello-world": "Hello World",
+  "hello-name": "Hello {name}!",
+  "hello-multiple": "Hi, {0}, {1}"
 }

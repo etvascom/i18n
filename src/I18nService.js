@@ -30,7 +30,7 @@ export class I18nService extends EventEmitter {
 
     if (dictionary && dictionary[label]) {
       // replace placeholders
-      return dictionary[label]
+      return this.replacePlaceholders(dictionary[label], args)
     } else if (language !== this.options.defaultLanguage) {
       console.warn(
         `i18n: Using fallback language translation for: lang=${language} label=${label}`
@@ -42,6 +42,19 @@ export class I18nService extends EventEmitter {
       `i18n: No translation found for lang=${language} label=${label}`
     )
     return `${language}: ${label}`
+  }
+
+  replacePlaceholders(str, args) {
+    if (!Array.isArray(args) && typeof args !== 'object') {
+      return str
+    }
+
+    const keys = Object.keys(args)
+
+    return keys.reduce(
+      (t, key) => t.replace(new RegExp(`\\{${key}\\}`), args[key]),
+      str
+    )
   }
 
   getDictionary(language) {

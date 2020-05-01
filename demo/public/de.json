@@ -1,4 +1,6 @@
 {
   "save": "Speichern",
-  "hello-world": "Hallo Welt"
+  "hello-world": "Hallo Welt",
+  "hello-name": "Hallo {name}!",
+  "hello-multiple": "Hallo, {0}, {1}"
 }

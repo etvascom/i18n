@@ -36,10 +36,20 @@ const Demo = () => {
         <p>
           The label <code>hello</code> doesn't have DE translations. It will
           fallback to <em>en</em>. <br />
+        </p>
+        <p>
           Hello translated:
           <strong>
             <T label='hello' />
           </strong>
+        </p>
+        <p>
+          With named arguments:
+          <T label='hello-name' args={{ name: 'John' }} />
+        </p>
+        <p>
+          With positional arguments:
+          <T label='hello-multiple' args={['John', 'Mark']} />
         </p>
         <p>
           <button>
