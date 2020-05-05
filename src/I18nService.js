@@ -4,6 +4,7 @@ import Debug from 'debug'
 import { DictionaryCache } from './DictionaryCache'
 
 const debug = Debug('etvas:i18n')
+const POST_MESSAGE_EVENT = 'etvas.i18n.change'
 
 const browserLanguage = () =>
   (navigator.languages && navigator.languages[0]) ||
@@ -17,6 +18,11 @@ export class I18nService extends EventEmitter {
     this.options = options
     this.dictionaries = new DictionaryCache(options.dictionaryUrl)
     this.language = options.defaultLanguage
+    if (window.addEventListener) {
+      window.addEventListener('message', this.handlePostMessage, false)
+    } else if (window.attachEvent) {
+      window.attachEvent('message', this.handlePostMessage, false)
+    }
   }
 
   t(label, args) {
@@ -128,5 +134,22 @@ export class I18nService extends EventEmitter {
 
   emitChange() {
     this.emit('change')
+    this.notifyFrames()
+  }
+
+  notifyFrames() {
+    const iframes = document.getElementsByTagName('iframe')
+    Array.from(iframes).forEach(iframe =>
+      iframe.contentWindow.postMessage(
+        { event: POST_MESSAGE_EVENT, payload: this.language },
+        '*'
+      )
+    )
+  }
+
+  handlePostMessage = ({ data }) => {
+    if (data.event === POST_MESSAGE_EVENT) {
+      this.setLanguage(data.payload)
+    }
   }
 }

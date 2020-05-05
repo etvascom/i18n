@@ -1,0 +1,10 @@
+.demos {
+  display: flex;
+  align-content: stretch;
+  flex-wrap: wrap;
+  justify-content: stretch;
+
+  .column {
+    width: 50%;
+  }
+}
