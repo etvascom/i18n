@@ -4,7 +4,8 @@ import Debug from 'debug'
 import { DictionaryCache } from './DictionaryCache'
 
 const debug = Debug('etvas:i18n')
-const POST_MESSAGE_EVENT = 'etvas.i18n.change'
+const POST_MESSAGE_EVENT_CHANGE = 'etvas.i18n.change'
+const POST_MESSAGE_EVENT_REQUEST = 'etvas.i18n.request'
 
 const browserLanguage = () =>
   (navigator.languages && navigator.languages[0]) ||
@@ -110,6 +111,8 @@ export class I18nService extends EventEmitter {
       return this.setLanguage(userLanguage)
     }
 
+    this.requestLanguageFromParentFrame()
+
     const browserLang = browserLanguage().substr(0, 2)
     if (this.supportsLanguage(browserLang)) {
       debug(' * using value from browser: %s', browserLang)
@@ -141,15 +144,28 @@ export class I18nService extends EventEmitter {
     const iframes = document.getElementsByTagName('iframe')
     Array.from(iframes).forEach(iframe =>
       iframe.contentWindow.postMessage(
-        { event: POST_MESSAGE_EVENT, payload: this.language },
+        { event: POST_MESSAGE_EVENT_CHANGE, payload: this.language },
         '*'
       )
     )
   }
+  requestLanguageFromParentFrame() {
+    if (window.parent) {
+      window.parent.postMessage({ event: POST_MESSAGE_EVENT_REQUEST }, '*')
+    }
+  }
 
   handlePostMessage = ({ data }) => {
-    if (data.event === POST_MESSAGE_EVENT) {
-      this.setLanguage(data.payload)
+    switch (data.event) {
+      case POST_MESSAGE_EVENT_CHANGE: {
+        this.setLanguage(data.payload)
+        return
+      }
+
+      case POST_MESSAGE_EVENT_REQUEST: {
+        this.notifyFrames()
+        return
+      }
     }
   }
 }
