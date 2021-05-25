@@ -1,12 +1,12 @@
 import EventEmitter from 'events'
 import Debug from 'debug'
 
+import { markedRules } from './markedRules'
 import { DictionaryCache } from './DictionaryCache'
 
 const debug = Debug('etvas:i18n')
 const POST_MESSAGE_EVENT_CHANGE = 'etvas.i18n.change'
 const POST_MESSAGE_EVENT_REQUEST = 'etvas.i18n.request'
-
 const browserLanguage = () =>
   (navigator.languages && navigator.languages[0]) ||
   navigator.language ||
@@ -26,14 +26,33 @@ export class I18nService extends EventEmitter {
     }
   }
 
-  t(label, args) {
-    return this.translate(label, this.language, args)
+  t(label, args, mark) {
+    return this.translate(label, this.language, args, mark)
   }
 
-  translate(label, language, args) {
+  translate(label, language, args, mark) {
     this.ensureSupportedLanguage(language)
 
     const dictionary = this.getDictionary(language)
+    const marked = args?.[mark]
+
+    if (!isNaN(marked)) {
+      let found = null
+      for (let i = 0; i < markedRules.length; i++) {
+        if (
+          dictionary &&
+          dictionary[`${label}.${markedRules[i].suffix}`] &&
+          markedRules[i].condition(marked)
+        ) {
+          found = markedRules[i].suffix
+          break
+        }
+      }
+
+      if (found) {
+        return this.replacePlaceholders(dictionary[`${label}.${found}`], args)
+      }
+    }
 
     if (dictionary && dictionary[label]) {
       // replace placeholders

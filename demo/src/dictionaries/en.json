@@ -3,5 +3,10 @@
   "hello": "Hello",
   "hello-world": "Hello World",
   "hello-name": "Hello {name}!",
-  "hello-multiple": "Hi, {0}, {1}"
+  "hello-multiple": "Hi, {0}, {1}",
+  "testLabel.negative": "Hello, negative, {value}",
+  "testLabel.zero": "Hello, {value}",
+  "testLabel.one": "Hello, one left",
+  "testLabel.many": "Hello, many left, {value}",
+  "foo.many": "Hello, many left, {0}"
 }

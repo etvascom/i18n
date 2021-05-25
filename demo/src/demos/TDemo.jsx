@@ -82,5 +82,53 @@ export const TDemo = () => (
   <p>Current language across app: {language}</p>
 )}</T>
   `}</Code>
+    <MarkedLabel />
+  </>
+)
+
+const MarkedLabel = () => (
+  <>
+    <h3>Display by mark</h3>
+    <p>
+      You can use the <code>mark</code> prop if you want to render a translation
+      based on different cases (negative/none/one/many)
+    </p>
+    <p>
+      Negative
+      <strong>
+        <T label='testLabel' args={{ value: -1 }} mark='value' />
+      </strong>
+    </p>
+    <Code>{` <T label='testLabel' args={{ value: -1 }} mark='value' />`}</Code>
+    <p>
+      Zero:
+      <strong>
+        <T label='testLabel' args={{ value: 0 }} mark='value' />
+      </strong>
+    </p>
+    <Code>{` <T label='testLabel' args={{ value: 0 }} mark='value' />`}</Code>
+    <p>
+      One:
+      <strong>
+        <T label='testLabel' args={{ value: 1 }} mark='value' />
+      </strong>
+    </p>
+    <Code>{`<T label='testLabel' args={{ value: 1 }} mark='value' />`}</Code>
+    <p>
+      Many:
+      <strong>
+        <T label='testLabel' args={{ value: 2 }} mark='value' />
+      </strong>
+    </p>
+    <Code>{`<T label='testLabel' args={{ value: 2 }} mark='value' />`}</Code>
+    <p>You can provide the index as a mark if the args props is an array</p>
+    <strong>
+      <T label='foo' args={[5]} mark={0} />
+    </strong>
+    <Code>{`<T label='foo' args={[5]} mark={0} />`}</Code>
+    <p>
+      If the label with the appropriate suffix is not found, the default label
+      is the declared one as a prop.
+    </p>
   </>
 )
