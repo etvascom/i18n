@@ -2,7 +2,7 @@ import { useContext, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { I18nContext } from './I18nProvider'
 
-export const T = ({ label, args, children }) => {
+export const T = ({ label, args, mark, children }) => {
   const { translate, language, languages } = useContext(I18nContext)
 
   if (children) {
@@ -13,7 +13,10 @@ export const T = ({ label, args, children }) => {
     }
   }
 
-  const value = useMemo(() => translate(label, args), [translate, args, label])
+  const value = useMemo(
+    () => translate(label, args, mark),
+    [translate, args, label, mark]
+  )
 
   return value
 }
@@ -21,5 +24,6 @@ export const T = ({ label, args, children }) => {
 T.propTypes = {
   label: PropTypes.string,
   args: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-  children: PropTypes.func
+  mark: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  children: PropTypes.func,
 }
