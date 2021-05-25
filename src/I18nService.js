@@ -36,7 +36,7 @@ export class I18nService extends EventEmitter {
     const dictionary = this.getDictionary(language)
     const marked = args?.[mark]
 
-    if (!isNaN(marked)) {
+    if (mark !== undefined && !isNaN(marked)) {
       let found = null
       for (let i = 0; i < markedRules.length; i++) {
         if (
