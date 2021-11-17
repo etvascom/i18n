@@ -24,12 +24,12 @@
   },
   "peerDependencies": {
     "prop-types": "^15.7.2",
-    "react": "16.x"
+    "react": "16.x || 17.x"
   },
   "devDependencies": {
-    "nwb": "0.24.x",
-    "prop-types": "^15.7.2",
+    "nwb": "^0.25.2",
     "nwb-sass": "^0.10.1",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-syntax-highlighter": "^12.2.1"
