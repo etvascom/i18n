@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { I18nContext } from './I18nProvider'
 
@@ -18,7 +18,7 @@ export const T = ({ label, args, mark, children }) => {
     [translate, args, label, mark]
   )
 
-  return value
+  return <span style={{ letterSpacing: 'inherit' }}>{value}</span>
 }
 
 T.propTypes = {
