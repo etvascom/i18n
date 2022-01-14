@@ -19,6 +19,8 @@ export class I18nService extends EventEmitter {
     this.options = options
     this.dictionaries = new DictionaryCache(options.dictionaryUrl)
     this.language = options.defaultLanguage
+    this.storage = options.storage ?? sessionStorage
+
     if (window.addEventListener) {
       window.addEventListener('message', this.handlePostMessage, false)
     } else if (window.attachEvent) {
@@ -113,7 +115,7 @@ export class I18nService extends EventEmitter {
 
   setSessionLanguage(language) {
     this.setLanguage(language)
-    sessionStorage.setItem(this.options.sessionKey, language)
+    this.storage.setItem(this.options.sessionKey, language)
   }
 
   autodetectLanguage(userLanguage) {
@@ -139,7 +141,7 @@ export class I18nService extends EventEmitter {
   }
 
   getSessionLanguage() {
-    const value = sessionStorage.getItem(this.options.sessionKey)
+    const value = this.storage.getItem(this.options.sessionKey)
     return this.supportsLanguage(value) ? value : undefined
   }
 
