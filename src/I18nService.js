@@ -1,7 +1,6 @@
 import EventEmitter from 'events'
 import Debug from 'debug'
 
-import { storage } from './storage'
 import { markedRules } from './markedRules'
 import { DictionaryCache } from './DictionaryCache'
 
@@ -20,7 +19,7 @@ export class I18nService extends EventEmitter {
     this.options = options
     this.dictionaries = new DictionaryCache(options.dictionaryUrl)
     this.language = options.defaultLanguage
-    this.storage = storage(options.storage)
+    this.storage = options.storage ?? sessionStorage
 
     if (window.addEventListener) {
       window.addEventListener('message', this.handlePostMessage, false)
