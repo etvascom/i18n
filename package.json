@@ -27,7 +27,7 @@
     "react": "^16.6.0 || ^17"
   },
   "devDependencies": {
-    "nwb": "0.24.x",
+    "nwb": "0.25.x",
     "prop-types": "^15.7.2",
     "nwb-sass": "^0.10.1",
     "react": "^16.13.1",
