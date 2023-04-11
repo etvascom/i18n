@@ -130,5 +130,11 @@ const MarkedLabel = () => (
       If the label with the appropriate suffix is not found, the default label
       is the declared one as a prop.
     </p>
+    <p>
+      Language-specific translations:
+      <strong>
+        <T label='foo.only.de' args={{ value: 2 }} mark='value' />
+      </strong>
+    </p>
   </>
 )

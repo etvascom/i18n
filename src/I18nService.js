@@ -36,39 +36,31 @@ export class I18nService extends EventEmitter {
     this.ensureSupportedLanguage(language)
 
     const dictionary = this.getDictionary(language)
-    if (mark !== undefined && !isNaN(args?.[mark])) {
-      const marked = args?.[mark]
-      let found = null
-      for (let i = 0; i < markedRules.length; i++) {
-        if (
-          dictionary &&
-          dictionary[`${label}.${markedRules[i].suffix}`] &&
-          markedRules[i].condition(marked)
-        ) {
-          found = markedRules[i].suffix
-          break
-        }
-      }
 
-      if (found) {
-        return this.replacePlaceholders(dictionary[`${label}.${found}`], args)
+    const marked = args?.[mark]
+    if (mark && !isNaN(marked)) {
+      const rule = markedRules.find(
+        markedRule =>
+          dictionary?.[`${label}.${markedRule.suffix}`] &&
+          markedRule.condition(marked)
+      )
+
+      if (rule) {
+        return this.replacePlaceholders(
+          dictionary[`${label}.${rule.suffix}`],
+          args
+        )
       }
     }
 
-    if (dictionary && dictionary[label]) {
-      // replace placeholders
+    if (dictionary?.[label]) {
       return this.replacePlaceholders(dictionary[label], args)
-    } else if (language !== this.options.defaultLanguage) {
-      console.warn(
-        `i18n: Using fallback language translation for: lang=${language} label=${label}`
-      )
-      return this.translate(label, this.options.defaultLanguage, args)
     }
 
     console.warn(
       `i18n: No translation found for lang=${language} label=${label}`
     )
-    return `${language}: ${label}`
+    return label
   }
 
   replacePlaceholders(str, args) {
