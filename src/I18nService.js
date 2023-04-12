@@ -1,7 +1,7 @@
 import EventEmitter from 'events'
 import Debug from 'debug'
 
-import { markedRules } from './markedRules'
+import { suffixRules } from './suffixRules'
 import { DictionaryCache } from './DictionaryCache'
 
 const debug = Debug('etvas:i18n')
@@ -28,51 +28,47 @@ export class I18nService extends EventEmitter {
     }
   }
 
-  t(label, args, mark) {
-    return this.translate(label, this.language, args, mark)
+  t(key, args, pluralBy) {
+    return this.translate(key, this.language, args, pluralBy)
   }
 
-  translate(label, language, args, mark) {
+  translate(key, language, args, pluralBy) {
     this.ensureSupportedLanguage(language)
 
-    if (mark) {
-      return this.translateMarkedLabel(label, language, args, mark)
+    if (pluralBy) {
+      return this.translateMarkedLabel(key, language, args, pluralBy)
     }
 
-    return this.translateLabel(label, language, args)
+    return this.translateLabel(key, language, args)
   }
 
-  translateLabel(label, language, args) {
+  translateLabel(key, language, args) {
     const dictionary = this.getDictionary(language)
 
-    if (dictionary?.[label]) {
-      return this.replacePlaceholders(dictionary[label], args)
+    if (dictionary?.[key]) {
+      return this.replacePlaceholders(dictionary[key], args)
     }
 
-    console.warn(
-      `i18n: No translation found for lang=${language} label=${label}`
-    )
-    return label
+    console.warn(`i18n: No translation found for lang=${language} key=${key}`)
+    return key
   }
 
-  translateMarkedLabel(label, language, args, mark) {
+  translateMarkedLabel(key, language, args, pluralBy) {
     const dictionary = this.getDictionary(language)
-    const marked = args?.[mark]
+    const marked = args?.[pluralBy]
 
-    const rule = markedRules.find(
-      markedRule =>
-        dictionary?.[`${label}.${markedRule.suffix}`] &&
-        markedRule.condition(marked)
+    const suffixRule = suffixRules.find(
+      rule => dictionary?.[`${key}.${rule.suffix}`] && rule.condition(marked)
     )
 
-    if (rule) {
+    if (suffixRule) {
       return this.replacePlaceholders(
-        dictionary[`${label}.${rule.suffix}`],
+        dictionary[`${key}.${suffixRule.suffix}`],
         args
       )
     }
 
-    return this.translateLabel(label, language, args)
+    return this.translateLabel(key, language, args)
   }
 
   replacePlaceholders(str, args) {
