@@ -63,10 +63,11 @@ export class I18nService extends EventEmitter {
 
   translateMarkedLabel(key, language, args, pluralBy) {
     const dictionary = this.getDictionary(language)
-    const marked = args?.[pluralBy]
+    const pluralValue = args?.[pluralBy]
 
     const suffixRule = suffixRules.find(
-      rule => dictionary?.[`${key}.${rule.suffix}`] && rule.condition(marked)
+      rule =>
+        dictionary?.[`${key}.${rule.suffix}`] && rule.condition(pluralValue)
     )
 
     if (suffixRule) {
