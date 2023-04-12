@@ -1,7 +1,7 @@
 import EventEmitter from 'events'
 import Debug from 'debug'
 
-import { markedRules } from './markedRules'
+import { suffixRules } from './suffixRules'
 import { DictionaryCache } from './DictionaryCache'
 
 const debug = Debug('etvas:i18n')
@@ -20,6 +20,7 @@ export class I18nService extends EventEmitter {
     this.dictionaries = new DictionaryCache(options.dictionaryUrl)
     this.language = options.defaultLanguage
     this.storage = options.storage ?? sessionStorage
+    this.fallbackToKey = options.fallbackToKey ?? false
 
     if (window.addEventListener) {
       window.addEventListener('message', this.handlePostMessage, false)
@@ -28,47 +29,55 @@ export class I18nService extends EventEmitter {
     }
   }
 
-  t(label, args, mark) {
-    return this.translate(label, this.language, args, mark)
+  t(key, args, pluralBy) {
+    return this.translate(key, this.language, args, pluralBy)
   }
 
-  translate(label, language, args, mark) {
+  translate(key, language, args, pluralBy) {
     this.ensureSupportedLanguage(language)
 
+    if (pluralBy) {
+      return this.translateMarkedLabel(key, language, args, pluralBy)
+    }
+
+    return this.translateLabel(key, language, args)
+  }
+
+  translateLabel(key, language, args) {
     const dictionary = this.getDictionary(language)
-    if (mark !== undefined && !isNaN(args?.[mark])) {
-      const marked = args?.[mark]
-      let found = null
-      for (let i = 0; i < markedRules.length; i++) {
-        if (
-          dictionary &&
-          dictionary[`${label}.${markedRules[i].suffix}`] &&
-          markedRules[i].condition(marked)
-        ) {
-          found = markedRules[i].suffix
-          break
-        }
-      }
 
-      if (found) {
-        return this.replacePlaceholders(dictionary[`${label}.${found}`], args)
-      }
+    if (dictionary?.[key]) {
+      return this.replacePlaceholders(dictionary[key], args)
     }
 
-    if (dictionary && dictionary[label]) {
-      // replace placeholders
-      return this.replacePlaceholders(dictionary[label], args)
-    } else if (language !== this.options.defaultLanguage) {
+    if (language !== this.options.defaultLanguage && !this.fallbackToKey) {
       console.warn(
-        `i18n: Using fallback language translation for: lang=${language} label=${label}`
+        `i18n: Using fallback language translation for: lang=${language} key=${key}`
       )
-      return this.translate(label, this.options.defaultLanguage, args)
+      return this.translate(key, this.options.defaultLanguage, args)
     }
 
-    console.warn(
-      `i18n: No translation found for lang=${language} label=${label}`
+    console.warn(`i18n: No translation found for lang=${language} key=${key}`)
+    return key
+  }
+
+  translateMarkedLabel(key, language, args, pluralBy) {
+    const dictionary = this.getDictionary(language)
+    const pluralValue = args?.[pluralBy]
+
+    const suffixRule = suffixRules.find(
+      rule =>
+        dictionary?.[`${key}.${rule.suffix}`] && rule.condition(pluralValue)
     )
-    return `${language}: ${label}`
+
+    if (suffixRule) {
+      return this.replacePlaceholders(
+        dictionary[`${key}.${suffixRule.suffix}`],
+        args
+      )
+    }
+
+    return this.translateLabel(key, language, args)
   }
 
   replacePlaceholders(str, args) {

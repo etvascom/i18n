@@ -1,4 +1,4 @@
-export const markedRules = [
+export const suffixRules = [
   { condition: value => value < 0, suffix: 'negative' },
   { condition: value => value === 0, suffix: 'zero' },
   { condition: value => value === 1, suffix: 'one' },

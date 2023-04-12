@@ -5,6 +5,7 @@ import { I18nProvider, T, I18nService } from '../../src'
 import { LanguageSwitcher, LanguageSelector } from './LanguageSwitcher'
 import { languages } from './languages'
 import en from './dictionaries/en'
+import de from './dictionaries/de'
 import { IframeDemo, TDemo } from './demos'
 import { Section } from './components'
 import './Demo.scss'
@@ -12,10 +13,12 @@ import './Demo.scss'
 const i18nService = new I18nService(languages, {
   sessionKey: 'etvas.i18n.lib',
   defaultLanguage: 'en',
-  dictionaryUrl: '/{lang}.json'
+  dictionaryUrl: '/{lang}.json',
 })
 
+sessionStorage.removeItem('etvas.i18n.lib')
 i18nService.loadDictionary('en', en)
+i18nService.loadDictionary('de', de)
 
 const Demo = () => {
   const [lang, setLang] = useState('en')
