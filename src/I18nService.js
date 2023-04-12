@@ -20,6 +20,7 @@ export class I18nService extends EventEmitter {
     this.dictionaries = new DictionaryCache(options.dictionaryUrl)
     this.language = options.defaultLanguage
     this.storage = options.storage ?? sessionStorage
+    this.fallbackToKey = options.fallbackToKey ?? false
 
     if (window.addEventListener) {
       window.addEventListener('message', this.handlePostMessage, false)
@@ -47,6 +48,13 @@ export class I18nService extends EventEmitter {
 
     if (dictionary?.[key]) {
       return this.replacePlaceholders(dictionary[key], args)
+    }
+
+    if (language !== this.options.defaultLanguage && !this.fallbackToKey) {
+      console.warn(
+        `i18n: Using fallback language translation for: lang=${language} key=${key}`
+      )
+      return this.translate(key, this.options.defaultLanguage, args)
     }
 
     console.warn(`i18n: No translation found for lang=${language} key=${key}`)
