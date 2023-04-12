@@ -35,23 +35,15 @@ export class I18nService extends EventEmitter {
   translate(label, language, args, mark) {
     this.ensureSupportedLanguage(language)
 
-    const dictionary = this.getDictionary(language)
-
-    const marked = args?.[mark]
-    if (mark && !isNaN(marked)) {
-      const rule = markedRules.find(
-        markedRule =>
-          dictionary?.[`${label}.${markedRule.suffix}`] &&
-          markedRule.condition(marked)
-      )
-
-      if (rule) {
-        return this.replacePlaceholders(
-          dictionary[`${label}.${rule.suffix}`],
-          args
-        )
-      }
+    if (mark) {
+      return this.translateMarkedLabel(label, language, args, mark)
     }
+
+    return this.translateLabel(label, language, args)
+  }
+
+  translateLabel(label, language, args) {
+    const dictionary = this.getDictionary(language)
 
     if (dictionary?.[label]) {
       return this.replacePlaceholders(dictionary[label], args)
@@ -61,6 +53,26 @@ export class I18nService extends EventEmitter {
       `i18n: No translation found for lang=${language} label=${label}`
     )
     return label
+  }
+
+  translateMarkedLabel(label, language, args, mark) {
+    const dictionary = this.getDictionary(language)
+    const marked = args?.[mark]
+
+    const rule = markedRules.find(
+      markedRule =>
+        dictionary?.[`${label}.${markedRule.suffix}`] &&
+        markedRule.condition(marked)
+    )
+
+    if (rule) {
+      return this.replacePlaceholders(
+        dictionary[`${label}.${rule.suffix}`],
+        args
+      )
+    }
+
+    return this.translateLabel(label, language, args)
   }
 
   replacePlaceholders(str, args) {
