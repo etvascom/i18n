@@ -36,7 +36,7 @@ export class I18nService extends EventEmitter {
   translate(key, language, args, pluralBy) {
     this.ensureSupportedLanguage(language)
 
-    if (pluralBy) {
+    if (pluralBy !== undefined) {
       return this.translateMarkedLabel(key, language, args, pluralBy)
     }
 
