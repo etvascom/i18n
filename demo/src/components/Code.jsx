@@ -1,4 +1,3 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import { Light } from 'react-syntax-highlighter'
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript'
@@ -13,5 +12,5 @@ export const Code = ({ children }) => (
 )
 
 Code.propTypes = {
-  children: PropTypes.string
+  children: PropTypes.string,
 }

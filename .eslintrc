@@ -70,7 +70,6 @@
     "react/display-name": 0,
     "react/forbid-foreign-prop-types": 0,
     "react/jsx-uses-vars": "error",
-    "react/jsx-uses-react": "error",
     "react/jsx-no-duplicate-props": "error",
     "react/no-access-state-in-setstate": 2,
     "react/no-array-index-key": 1,
@@ -87,11 +86,16 @@
     "react/prefer-es6-class": ["error", "always"],
     "react/require-render-return": 2,
     "semi": ["error", "never"],
-    "space-before-function-paren": ["error", {
-      "named": "never"
-    }],
+    "space-before-function-paren": [
+      "error",
+      {
+        "named": "never"
+      }
+    ],
     "strict": ["error", "global"],
-    "wrap-iife": "warn"
+    "wrap-iife": "warn",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off"
   },
   "overrides": [
     {

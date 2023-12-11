@@ -52,7 +52,7 @@ export class I18nService extends EventEmitter {
 
     if (language !== this.options.defaultLanguage && !this.fallbackToKey) {
       console.warn(
-        `i18n: Using fallback language translation for: lang=${language} key=${key}`
+        `i18n: Using fallback language translation for: lang=${language} key=${key}`,
       )
       return this.translate(key, this.options.defaultLanguage, args)
     }
@@ -67,13 +67,13 @@ export class I18nService extends EventEmitter {
 
     const suffixRule = suffixRules.find(
       rule =>
-        dictionary?.[`${key}.${rule.suffix}`] && rule.condition(pluralValue)
+        dictionary?.[`${key}.${rule.suffix}`] && rule.condition(pluralValue),
     )
 
     if (suffixRule) {
       return this.replacePlaceholders(
         dictionary[`${key}.${suffixRule.suffix}`],
-        args
+        args,
       )
     }
 
@@ -89,7 +89,7 @@ export class I18nService extends EventEmitter {
 
     return keys.reduce(
       (t, key) => t.replace(new RegExp(`\\{${key}\\}`), args[key]),
-      str
+      str,
     )
   }
 
@@ -174,8 +174,8 @@ export class I18nService extends EventEmitter {
     Array.from(iframes).forEach(iframe =>
       iframe.contentWindow.postMessage(
         { event: POST_MESSAGE_EVENT_CHANGE, payload: this.language },
-        '*'
-      )
+        '*',
+      ),
     )
   }
   requestLanguageFromParentFrame() {

@@ -13,7 +13,7 @@ export class DictionaryCache {
       this.cache[language] = {
         dictionary,
         loaded: true,
-        loading: false
+        loading: false,
       }
 
       return dictionary
@@ -24,7 +24,7 @@ export class DictionaryCache {
 
     this.cache[language] = {
       loaded: false,
-      loading: true
+      loading: true,
     }
 
     debug('loading remote dictionary for %s from %s', language, url)

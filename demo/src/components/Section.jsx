@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import './Section.scss'
 
@@ -18,5 +18,5 @@ export const Section = ({ title, children, open }) => {
 Section.propTypes = {
   open: PropTypes.bool,
   title: PropTypes.node,
-  children: PropTypes.node
+  children: PropTypes.node,
 }

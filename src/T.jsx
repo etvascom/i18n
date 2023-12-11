@@ -15,7 +15,7 @@ export const T = ({ label, args, mark, children }) => {
 
   const value = useMemo(
     () => translate(label, args, mark),
-    [translate, args, label, mark]
+    [translate, args, label, mark],
   )
 
   return value

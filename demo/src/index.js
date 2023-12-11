@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { render } from 'react-dom'
 
 import { I18nProvider, T, I18nService } from '../../src'

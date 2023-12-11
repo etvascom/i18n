@@ -52,7 +52,7 @@ const serve = () =>
           '.jsx': 'jsx',
         },
         plugins: [sassPlugin()],
-      }
+      },
     )
     .then(() => console.log('App is live at http://localhost:3000'))
     .catch(() => process.exit(1))

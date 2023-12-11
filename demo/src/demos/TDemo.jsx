@@ -1,4 +1,3 @@
-import React from 'react'
 import { T } from '../../../src'
 import { Code } from '../components'
 
@@ -44,7 +43,8 @@ export const TDemo = () => (
             <a
               href='google.com'
               target='_blank'
-              title={translate('hello-world')}>
+              title={translate('hello-world')}
+            >
               Hover me
             </a>
           </p>

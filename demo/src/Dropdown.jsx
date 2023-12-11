@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 export const Dropdown = ({ value, options, onChange }) => {
   const handleChange = useCallback(
     ev => onChange && onChange(ev.target.value),
-    [onChange]
+    [onChange],
   )
 
   return (
@@ -23,8 +23,8 @@ Dropdown.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
-      label: PropTypes.string
-    })
+      label: PropTypes.string,
+    }),
   ),
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
 }
