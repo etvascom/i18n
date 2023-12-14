@@ -10,6 +10,7 @@ const build = () => {
     entryPoints: ['src/index.js'],
     minify: true,
     bundle: true,
+    inject: ['build-react-shim.js'],
     loader: {
       '.js': 'jsx',
       '.jsx': 'jsx',
@@ -52,7 +53,7 @@ const serve = () =>
           '.jsx': 'jsx',
         },
         plugins: [sassPlugin()],
-      },
+      }
     )
     .then(() => console.log('App is live at http://localhost:3000'))
     .catch(() => process.exit(1))
