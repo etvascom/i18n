@@ -48,6 +48,7 @@ const serve = () =>
         outfile: './demo/dist/index.js',
         format: 'esm',
         bundle: true,
+        inject: ['build-react-shim.js'],
         loader: {
           '.js': 'jsx',
           '.jsx': 'jsx',

@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import { render } from 'react-dom'
+import React, { useState } from 'react'
+import { createRoot } from 'react-dom/client'
 
-import { I18nProvider, T, I18nService } from '../../src'
+import { I18nProvider, I18nService } from '../../src'
 import { LanguageSwitcher, LanguageSelector } from './LanguageSwitcher'
 import { languages } from './languages'
 import en from './dictionaries/en'
@@ -16,7 +16,6 @@ const i18nService = new I18nService(languages, {
   dictionaryUrl: '/{lang}.json',
 })
 
-sessionStorage.removeItem('etvas.i18n.lib')
 i18nService.loadDictionary('en', en)
 i18nService.loadDictionary('de', de)
 
@@ -56,4 +55,5 @@ const Demo = () => {
   )
 }
 
-render(<Demo />, document.querySelector('#demo'))
+const root = createRoot(document.getElementById('demo'))
+root.render(<Demo />)
