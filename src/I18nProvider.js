@@ -17,18 +17,14 @@ export const I18nProvider = ({ children, i18nService, authContext }) => {
     : { currentUser: undefined }
   const [ctx, setCtx] = useState(makeCtx(i18nService))
 
-  useEffect(
-    () => i18nService.autodetectLanguage(currentUser?.locale),
-    [currentUser, i18nService],
-  )
-
   useEffect(() => {
     const handler = () => {
       setCtx(makeCtx(i18nService))
     }
     i18nService.on('change', handler)
+    i18nService.autodetectLanguage(currentUser?.locale)
     return () => i18nService.removeListener('change', handler)
-  }, [i18nService, setCtx])
+  }, [i18nService, currentUser, setCtx])
 
   return <I18nContext.Provider value={ctx}>{children}</I18nContext.Provider>
 }
