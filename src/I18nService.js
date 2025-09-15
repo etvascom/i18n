@@ -21,6 +21,7 @@ export class I18nService extends EventEmitter {
     this.language = options.defaultLanguage
     this.storage = options.storage ?? sessionStorage
     this.fallbackToKey = options.fallbackToKey ?? false
+    this.keysToReplace = options.keysToReplace ?? {}
 
     if (window.addEventListener) {
       window.addEventListener('message', this.handlePostMessage, false)
@@ -47,12 +48,12 @@ export class I18nService extends EventEmitter {
     const dictionary = this.getDictionary(language)
 
     if (dictionary?.[key]) {
-      return this.replacePlaceholders(dictionary[key], args)
+      return this.replacePlaceholders(this.replaceKeys(dictionary[key]), args)
     }
 
     if (language !== this.options.defaultLanguage && !this.fallbackToKey) {
       console.warn(
-        `i18n: Using fallback language translation for: lang=${language} key=${key}`,
+        `i18n: Using fallback language translation for: lang=${language} key=${key}`
       )
       return this.translate(key, this.options.defaultLanguage, args)
     }
@@ -67,13 +68,13 @@ export class I18nService extends EventEmitter {
 
     const suffixRule = suffixRules.find(
       rule =>
-        dictionary?.[`${key}.${rule.suffix}`] && rule.condition(pluralValue),
+        dictionary?.[`${key}.${rule.suffix}`] && rule.condition(pluralValue)
     )
 
     if (suffixRule) {
       return this.replacePlaceholders(
         dictionary[`${key}.${suffixRule.suffix}`],
-        args,
+        args
       )
     }
 
@@ -89,8 +90,16 @@ export class I18nService extends EventEmitter {
 
     return keys.reduce(
       (t, key) => t.replace(new RegExp(`\\{${key}\\}`), args[key]),
-      str,
+      str
     )
+  }
+
+  replaceKeys(str) {
+    for (const key in this.keysToReplace) {
+      str = str.replaceAll(key, this.keysToReplace[key])
+    }
+
+    return str
   }
 
   getDictionary(language) {
@@ -174,8 +183,8 @@ export class I18nService extends EventEmitter {
     Array.from(iframes).forEach(iframe =>
       iframe.contentWindow.postMessage(
         { event: POST_MESSAGE_EVENT_CHANGE, payload: this.language },
-        '*',
-      ),
+        '*'
+      )
     )
   }
   requestLanguageFromParentFrame() {
